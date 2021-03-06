@@ -191,7 +191,6 @@ export class FrameController implements AppearanceObserverDelegate, FetchRequest
   // View delegate
 
   viewWillRenderSnapshot(snapshot: Snapshot, isPreview: boolean) {
-    dispatch("turbo:before-frame-cache", { target: this.element })
     dispatch("turbo:before-frame-render", { target: this.element, detail: { newFrame: snapshot.element } })
   }
 

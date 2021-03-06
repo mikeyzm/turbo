@@ -14,7 +14,6 @@ export class FrameNavigationTests extends TurboDriveTestCase {
     const { url } = await this.nextEventOnTarget("frame", "turbo:before-frame-visit")
     this.assert.ok(url.includes(href))
     await this.nextEventOnTarget("frame", "turbo:frame-visit")
-    await this.nextEventOnTarget("frame", "turbo:before-frame-cache")
 
     const beforeFrameRender = await this.nextEventOnTarget("frame", "turbo:before-frame-render")
     this.assert.ok("newFrame" in beforeFrameRender, "reference the new snapshot")
@@ -33,7 +32,6 @@ export class FrameNavigationTests extends TurboDriveTestCase {
     const { url } = await this.nextEventOnTarget("frame", "turbo:before-frame-visit")
     this.assert.ok(url.includes(href))
     await this.nextEventOnTarget("frame", "turbo:frame-visit")
-    await this.nextEventOnTarget("frame", "turbo:before-frame-cache")
 
     const beforeFrameRender = await this.nextEventOnTarget("frame", "turbo:before-frame-render")
     this.assert.ok("newFrame" in beforeFrameRender, "reference the new snapshot")
