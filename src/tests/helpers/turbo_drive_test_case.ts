@@ -2,7 +2,7 @@ import { FunctionalTestCase } from "./functional_test_case"
 import { RemoteChannel } from "./remote_channel"
 import { Element } from "@theintern/leadfoot"
 
-type EventLog = [string, string, any]
+type EventLog = [string, any, string | null]
 
 export class TurboDriveTestCase extends FunctionalTestCase {
   eventLogChannel: RemoteChannel<EventLog> = new RemoteChannel(this.remote, "eventLogs")
@@ -30,16 +30,16 @@ export class TurboDriveTestCase extends FunctionalTestCase {
       const records = await this.eventLogChannel.read(1)
       record = records.find(([name]) => name == eventName)
     }
-    return record[2]
+    return record[1]
   }
 
   async nextEventOnTarget(elementId: string, eventName: string): Promise<any> {
     let record: EventLog | undefined
     while (!record) {
       const records = await this.eventLogChannel.read(1)
-      record = records.find(([name, id]) => name == eventName && id == elementId)
+      record = records.find(([name, _, id]) => name == eventName && id == elementId)
     }
-    return record[2]
+    return record[1]
   }
 
   get nextBody(): Promise<Element> {
