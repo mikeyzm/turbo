@@ -123,6 +123,37 @@ export class NavigationTests extends TurboDriveTestCase {
 
     this.assert.equal(await this.pathname, "/src/tests/fixtures/frames/hello.html")
   }
+
+  async "test skip link with hash-only path scrolls to the anchor without a visit"() {
+    await this.clickSelector('a[href="#main"]')
+    await this.nextBody
+
+    this.assert.ok(await this.hasSelector("#main"), "remained on page")
+    this.assert.ok(await this.isScrolledToSelector("#main"), "scrolled to #main")
+  }
+
+  async "test skip link with hash-only path moves focus and changes tab order"() {
+    await this.clickSelector('a[href="#main"]')
+    await this.nextBody
+    await this.pressTab()
+
+    this.assert.notOk(await this.selectorHasFocus("#ignored-link"), "skips interactive elements before #main")
+    this.assert.ok(await this.selectorHasFocus("#main a:first-of-type"), "skips to first interactive element after #main")
+  }
+
+  async "test navigating back to anchored URL"() {
+    await this.clickSelector('a[href="#main"]')
+    await this.nextBody
+
+    await this.clickSelector("#same-origin-unannotated-link")
+    await this.nextBody
+    await this.nextBeat
+
+    await this.goBack()
+    await this.nextBody
+
+    this.assert.ok(await this.isScrolledToSelector("#main"), "scrolled to #main")
+  }
 }
 
 NavigationTests.registerSuite()

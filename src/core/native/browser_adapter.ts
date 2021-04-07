@@ -15,7 +15,8 @@ export class BrowserAdapter implements Adapter {
   }
 
   visitProposedToLocation(location: URL, options?: Partial<VisitOptions>) {
-    this.navigator.startVisit(location, uuid(), options)
+    const restorationIdentifier = options?.restorationIdentifier || uuid()
+    this.navigator.startVisit(location, restorationIdentifier, options)
   }
 
   visitStarted(visit: Visit) {
